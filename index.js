@@ -36,8 +36,7 @@ app.get('/', async (req, res) => {
       relations[item].data = bloodBankDummy
     }
 
-    console.log(relations[0].data);
-
+    console.log(relations)
 
     const data = {relations: relations}
     res.render('pages/index', data)
