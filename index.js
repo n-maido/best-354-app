@@ -15,9 +15,18 @@ var relations = [
   { name: "Hospitals" },
   { name: "Volunteers" },
   { name: "Donors" },
+  { name: "Donor Contact" },
   { name: "Recipients" },
   { name: "Phlebotomists" },
-  { name: "Blood Bags" }
+  { name: "Blood Bags" },
+  { name: "Red Blood Cells" },
+  { name: "Plasma" },
+  { name: "Platelets" },
+  { name: "Conducted Questionnaires" },
+  { name: "Donations (Donors)" },
+  { name: "Donations (Blood)" },
+  { name: "Blood Transported From Blood Drive to Blood Bank" },
+  { name: "Blood Transported From Blood Bank to Hospital" },
 ]
 
 // GET
