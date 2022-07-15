@@ -34,6 +34,7 @@ var relations = [
 app.get('/', async (req, res) => {
   
   try {
+    // let tmpRelations = []
     // get table data and append to relations
     const bloodBankDummy = [
       { instNo: 1, address: "3415 Okanagan, Armstrong, BC" },
@@ -44,6 +45,8 @@ app.get('/', async (req, res) => {
     for (const item in relations) {
       relations[item].data = bloodBankDummy
     }
+
+    // tmpRelations.push({name: "Blood Banks", data: bloodBankDummy})
 
     console.log(relations)
 
