@@ -8,12 +8,39 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
+// var relations = ["Blood Banks", "Blood Drives", "Hospitals", "Volunteers", "Donors", "Recipients", "Phlebotomists", "Blood Bags"]
+var relations = [
+  { name: "Blood Banks" },
+  { name: "Blood Drives" },
+  { name: "Hospitals" },
+  { name: "Volunteers" },
+  { name: "Donors" },
+  { name: "Recipients" },
+  { name: "Phlebotomists" },
+  { name: "Blood Bags" }
+]
+
 // GET
 // main page
 app.get('/', async (req, res) => {
   
   try {
-    res.render('pages/index')
+    // get table data and append to relations
+    const bloodBankDummy = [
+      { instNo: 1, address: "3415 Okanagan, Armstrong, BC" },
+      { instNo: 2, address: "3415 Okanagan, Armstrong, BC" },
+      {instNo: 3, address: "3415 Okanagan, Armstrong, BC"}
+    ]
+    
+    for (const item in relations) {
+      relations[item].data = bloodBankDummy
+    }
+
+    console.log(relations[0].data);
+
+
+    const data = {relations: relations}
+    res.render('pages/index', data)
   } catch (error) {
     res.send(error)
   }
