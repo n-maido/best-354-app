@@ -18,7 +18,9 @@
       </tr>
       <% r.data.forEach(function(item) { %>
         <tr>
-          <td><%= item %></td>   
+          <% Object.keys(item).forEach(function(i) { %>
+            <td><%= item[i] %></td>
+          <% }); %>
         </tr>
       <% }); %>
     </table
