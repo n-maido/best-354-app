@@ -4,6 +4,20 @@ const PORT = process.env.PORT || 5000
 
 var app = express()
 
+// connect to db
+const { Pool } = require('pg')
+const config = {
+  // db name is bbdb
+  connectionString: process.env.DATABASE_URL || "postgres://postgres:root@localhost/bbdb"
+}
+
+// if we're connected to the db on heroku, add this ssl setting
+if (config.connectionString === process.env.DATABASE_URL) {
+  config.ssl = { rejectUnauthorized: false };
+}
+
+var pool = new Pool(config)
+
 app.use(express.static(path.join(__dirname, 'public')))
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
