@@ -1,4 +1,4 @@
--- Enity Tables: Create statements
+-- CREATE Entity tables
 CREATE TABLE Blood_Bank(
  	instNo SERIAL UNIQUE,
  	address char(40),
@@ -8,6 +8,7 @@ CREATE TABLE Blood_Bank(
 CREATE TABLE Blood_Drive(
  	driveID SERIAL UNIQUE,
  	instNo SERIAL UNIQUE,
+    address char(40),
  	PRIMARY KEY (driveID),
     CONSTRAINT fk_instNo FOREIGN KEY(instNo) REFERENCES Blood_Bank(instNo)
 ); 
@@ -25,6 +26,15 @@ CREATE TABLE Volunteer(
  	PRIMARY KEY (vID)
 );
 
+
+CREATE TABLE Donor_Contact(
+	email char(40),
+ 	phoneNo TEXT,
+	address char(40),
+ 	name char(40),
+	PRIMARY KEY (email)
+);
+
 CREATE TABLE Donor(
 	donorID SERIAL UNIQUE,
  	dob date,
@@ -35,14 +45,6 @@ CREATE TABLE Donor(
  	bloodType char(40),
  	email char(40) UNIQUE,
  	CONSTRAINT fk_email FOREIGN KEY(email) REFERENCES Donor_Contact(email)
-);
-
-CREATE TABLE Donor_Contact(
-	email char(40),
- 	phoneNo TEXT,
-	address char(40),
- 	name char(40),
-	PRIMARY KEY (email)
 );
  	
 CREATE TABLE Blood_Bag (
@@ -97,7 +99,8 @@ CREATE TABLE Platelets(
  	CONSTRAINT fk_bloodID FOREIGN KEY(bloodID) REFERENCES Blood_Bag(bloodID)
 );
 
--- Relationship Tables: Create statements
+-- CREATE Relationship tables
+
 CREATE TABLE ConductQuestionnaire(
 	vID SERIAL UNIQUE, 
     donorID SERIAL UNIQUE,
@@ -168,7 +171,7 @@ CREATE TABLE TransportToHospital(
         ON UPDATE CASCADE,
 	FOREIGN KEY (hospitalInstNo) REFERENCES Hospital(instNo)
 		ON DELETE SET NULL
-        ON UPDATE CASCADE
+    ON UPDATE CASCADE
 );
 
 CREATE TABLE DisposeBlood(
