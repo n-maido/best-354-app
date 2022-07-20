@@ -91,30 +91,12 @@ app.get('/', async (req, res) => {
 
 // individual table page
 app.get('/Blood-Banks', async (req, res) => {
-  
   try {
-    // let tmpRelations = []
-    // get table data and append to relations
-    const bloodBankDummy = [
-      { instNo: 1, address: "3415 Okanagan, Armstrong, BC" },
-      { instNo: 2, address: "3415 Okanagan, Armstrong, BC" },
-      {instNo: 3, address: "3415 Okanagan, Armstrong, BC"}
-    ]
-    
-    for (const item in relations) {
-      relations[item].data = bloodBankDummy
-    }
-
-    // tmpRelations.push({name: "Blood Banks", data: bloodBankDummy})
-
-    console.log(relations)
-
-    const data = {relations: relations}
+    const data = { name: "Blood Banks", data: await getTableData("blood_bank") }
     res.render('pages/table', data)
   } catch (error) {
     res.send(error)
   }
 })
-
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`))

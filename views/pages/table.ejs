@@ -7,26 +7,23 @@
   <title>Blood Bank Database</title>
 </head>
 <body>
-  <h1>Blood Bank Database</h1>
-  <!--Generate tables-->
-  <% relations.forEach(function(r) { %>
-    <h3><%= r.name %></h3>
+  <h1><%= name %></h1>
+  <!--Generate table-->
     <table>
-      <!--Generate headings-->
-      <tr>
-        <% Object.keys(r.data[0]).forEach(function(item) { %>
-          <th><%= item %></th>
-        <% }); %>
-      </tr>
-      <!--Populate with data-->
-      <% r.data.forEach(function(item) { %>
+        <!--Generate headings-->
         <tr>
-          <% Object.keys(item).forEach(function(i) { %>
-            <td><%= item[i] %></td>
-          <% }); %>
+            <% Object.keys(data[0]).forEach(function(item) { %>
+            <th><%= item %></th>
+            <% }); %>
         </tr>
-      <% }); %>
-    </table
-  <% }); %>
+        <!--Populate with data-->
+        <% data.forEach(function(item) { %>
+            <tr>
+                <% Object.keys(item).forEach(function(i) { %>
+                    <td><%= item[i] %></td>
+                <% }); %>
+            </tr>
+        <% }); %>
+    </table>
 </body>
 </html>
