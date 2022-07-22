@@ -7,7 +7,7 @@ CREATE TABLE Blood_Bank(
 
 CREATE TABLE Blood_Drive(
  	driveID SERIAL UNIQUE,
- 	instNo SERIAL UNIQUE,
+ 	instNo SERIAL,
 address char(40),
  	PRIMARY KEY (driveID),
 CONSTRAINT fk_instNo FOREIGN KEY(instNo) REFERENCES Blood_Bank(instNo)
@@ -73,36 +73,34 @@ CREATE TABLE Recipient (
 CREATE TABLE Phlebotomist (
  	phlebID SERIAL UNIQUE, 
  	name char(40), 
- 	instNo SERIAL UNIQUE, 
+ 	instNo SERIAL, 
  	PRIMARY KEY (phlebID),
 FOREIGN KEY (instNo) REFERENCES Blood_Bank(instNo)
 );
 
 
 CREATE TABLE Red_Blood_Cells (
- 	bloodID SERIAL UNIQUE, 
+ 	bloodID SERIAL, 
  	hematocritLevel DECIMAL(4,2), 
  	hemoglobinLevel DECIMAL(3,1), 
  	CONSTRAINT fk_bloodID FOREIGN KEY(bloodID) REFERENCES Blood_Bag(bloodID) 
 );
 
 CREATE TABLE Plasma (
- 	bloodID SERIAL UNIQUE, 
+ 	bloodID SERIAL, 
  	plasmaCount int, 
  	CONSTRAINT fk_bloodID FOREIGN KEY(bloodID) REFERENCES Blood_Bag(bloodID)
 );
 
 
 CREATE TABLE Platelets(
- 	bloodID SERIAL UNIQUE, 
+ 	bloodID SERIAL, 
  	plateletsCount int, 
  	CONSTRAINT fk_bloodID FOREIGN KEY(bloodID) REFERENCES Blood_Bag(bloodID)
 );
 
--- CREATE Relationship tables
-
 CREATE TABLE Conduct_Questionnaire(
-	vID SERIAL UNIQUE, 
+	vID SERIAL, 
 donorID SERIAL UNIQUE,
 PRIMARY KEY (vID, donorID),
 	FOREIGN KEY (vID) REFERENCES Volunteer(vID)
@@ -114,10 +112,10 @@ ON UPDATE CASCADE
 );
 
 CREATE TABLE Donate_Donor(
-	donorID SERIAL UNIQUE,
+	donorID SERIAL,
  	time TIMESTAMP UNIQUE,
-	driveID SERIAL UNIQUE,
-	instNo SERIAL UNIQUE,
+	driveID SERIAL,
+	instNo SERIAL,
 PRIMARY KEY (donorID, time),
 	FOREIGN KEY (donorID) REFERENCES Donor(donorID)
 ON DELETE SET NULL
@@ -131,8 +129,8 @@ ON UPDATE CASCADE
 );
 
 CREATE TABLE Donate_Blood(
-	bloodID SERIAL UNIQUE,
-	donorID SERIAL UNIQUE,
+	bloodID SERIAL,
+	donorID SERIAL,
  	time TIMESTAMP, 
  	PRIMARY KEY (bloodID),
  	FOREIGN KEY (bloodID) REFERENCES Blood_Bag(bloodID),
@@ -141,9 +139,9 @@ CREATE TABLE Donate_Blood(
 );
 
 CREATE TABLE TransportToBloodBank(
-	bloodID SERIAL UNIQUE,
-	driveID SERIAL UNIQUE,
-	instNo SERIAL UNIQUE,
+	bloodID SERIAL,
+	driveID SERIAL,
+	instNo SERIAL,
 	time TIMESTAMP,
 	PRIMARY KEY (bloodID),
 	FOREIGN KEY (bloodID) REFERENCES Blood_Bag(bloodID)
@@ -158,9 +156,9 @@ ON UPDATE CASCADE
 );
 
 CREATE TABLE TransportToHospital(
-	bloodID SERIAL UNIQUE,
-	bankInstNo SERIAL UNIQUE,
-	hospitalInstNo SERIAL UNIQUE,
+	bloodID SERIAL,
+	bankInstNo SERIAL,
+	hospitalInstNo SERIAL,
 	time TIMESTAMP,
 	PRIMARY KEY (bloodID),
 	FOREIGN KEY (bloodID) REFERENCES Blood_Bag(bloodID)
@@ -175,8 +173,8 @@ ON UPDATE CASCADE
 );
 
 CREATE TABLE DisposeBlood(
-	bankInstNo SERIAL UNIQUE,
-	bloodID SERIAL UNIQUE,
+	bankInstNo SERIAL,
+	bloodID SERIAL,
 	time TIMESTAMP,
 	PRIMARY KEY (bloodID),
 	FOREIGN KEY (bankInstNo) REFERENCES Blood_Bank(instNo)
@@ -189,8 +187,8 @@ ON UPDATE CASCADE
 
 CREATE TABLE TestBlood(
 	bloodID SERIAL UNIQUE,
-	instNo SERIAL UNIQUE,
-	phlebID SERIAL UNIQUE,
+	instNo SERIAL,
+	phlebID SERIAL,
 	time TIMESTAMP,	
 	PRIMARY KEY (bloodID),
 	FOREIGN KEY (bloodID) REFERENCES Blood_Bag(bloodID)
@@ -205,8 +203,8 @@ ON UPDATE CASCADE
 );
 
 CREATE TABLE Transfusion(
-	rID SERIAL UNIQUE,
-	instNo SERIAL UNIQUE,
+	rID SERIAL,
+	instNo SERIAL,
 	time TIMESTAMP,
 	FOREIGN KEY (rID) REFERENCES Recipient(rID)
 		ON DELETE SET NULL
@@ -220,24 +218,27 @@ ON UPDATE CASCADE
 
 
 
-
 -- POPULATE Tables
 INSERT INTO public.blood_bag(
 	bloodid, expirydate, bloodtype, quantity, donationdate, bloodstatus, curaddress)
 	VALUES 
 	(111, '2022-01-01', 'A+', 200, '2021-01-01', 'Ready For Transport', '3415 Okanagan, Armstrong, BC'),
 	(222, '2022-02-02', 'B+', 210, '2021-02-02', 'Frozen', '2447 Main St, Westbank, BC'),
-	(333, '2022-03-03', 'AB+', 220, '2021-03-03', 'Disposed', '4101 Shelbourne St, Toronto, ON'),
-	(444, '2022-04-04', 'O+', 230, '2021-04-04', 'Testing', '1003 Frigon, Shawinigan, QC'),
+	(333, '2022-03-03', 'AB+', 220, NULL, 'Disposed', NULL),
+	(334, '2022-03-03', 'AB+', 220, NULL, 'Disposed', NULL),
+	(335, '2022-03-03', 'AB+', 220, NULL, 'Disposed', NULL),
+	(444, '2022-04-04', 'O+', 230, NULL, 'Testing', '1003 Frigon, Shawinigan, QC'),
 	(555, '2022-05-5', 'O-', 240, '2021-05-05', 'Untested', '1015 Lake Shore Blvd, Toronto, ON'),
 	(666, '2022-01-01','A+', 250, '2021-01-01', 'Ready For Transport', '3415 Okanagan, Armstrong, BC'),
 	(777, '2022-02-02','B+', 260, '2021-02-02', 'Frozen', '2447 Main St, Westbank, BC'),
-	(888, '2022-03-03','AB+',270, '2021-03-03', 'Disposed', '4101 Shelbourne St, Toronto, ON'),
-	(999, '2022-04-04','O+', 280, '2021-04-04', 'Testing', '1003 Frigon, Shawinigan, QC'),
+	(888, '2022-03-03','AB+',270, NULL, 'Disposed', NULL),
+	(999, '2022-04-04','O+', 280, NULL, 'Testing', '1003 Frigon, Shawinigan, QC'),
 	(1111,'2022-05-05','O-', 290, '2021-01-01', 'Ready For Transport', '3415 Okanagan, Armstrong, BC'),
 	(1222,'2022-01-01','A+', 300, '2021-02-02', 'Frozen','2447 Main St, Westbank, BC'),
-	(1333,'2022-02-02','B+', 310, '2021-03-03', 'Disposed','4101 Shelbourne St, Toronto, ON'),
-	(1444,'2022-03-03','AB+',320,'2021-04-04','Testing','1003 Frigon, Shawinigan, QC'),
+	(1333,'2022-02-02','B+', 310, NULL, 'Disposed', NULL),
+	(1444,'2022-03-03','AB+',320,NULL ,'Testing','1003 Frigon, Shawinigan, QC'),
+(1445,'2022-03-03','AB+',320,NULL ,'Testing','1003 Frigon, Shawinigan, QC'),
+(1446,'2022-03-03','AB+',320, NULL,'Testing','1003 Frigon, Shawinigan, QC'),
 	(1555,'2022-04-04','O+', 330,'2021-01-01','Ready For Transport','3415 Okanagan, Armstrong, BC'),
 	(1666,'2022-05-05','O-', 340,'2021-02-02','Frozen','2447 Main St, Westbank, BC');
 
@@ -366,7 +367,12 @@ INSERT INTO public.donate_blood(
 	(333, 3, '2017-03-17 07:40:34'),
 	(555, 5, '2016-08-13 20:57:35'),
 	(111, 1, '2021-11-06 17:22:11'),
-	(222, 2, '2019-04-26 05:20:01');
+	(222, 2, '2019-04-26 05:20:01'),
+	(1222, 5, '2016-08-13 20:57:35'),
+	(1333, 5, '2016-08-13 20:57:35'),
+	(1444, 5, '2016-08-13 20:57:35'),
+	(1555, 5, '2016-08-13 20:57:35'),
+	(1666, 5, '2016-08-13 20:57:35');
 
 INSERT INTO public.transporttobloodbank(
 	bloodid, driveid, instno, "time")
@@ -385,3 +391,21 @@ INSERT INTO public.transporttohospital(
 	(333, 3, 33, '2016-08-17 21:57:35'),
 	(444, 4, 44, '2021-11-10 18:22:11'),
 	(555, 5, 55, '2019-04-30 06:20:01');
+
+INSERT INTO public.transfusion(
+	rid, instno, "time")
+	VALUES 
+		(1, 11, '2019-11-25 21:25:16'),
+		(2, 22, '2017-03-22 08:40:34'),
+		(3, 33, '2016-08-18 21:57:35'),
+		(4, 44, '2021-11-11 18:22:11'),
+		(5, 55, '2019-05-01 06:20:01');
+
+INSERT INTO public.disposeblood(
+	bankinstno, bloodid, "time")
+	VALUES 
+	(1,333, '2023-03-03 20:0:00'),
+	(2,334, '2023-03-03 20:0:00'),
+	(3,335, '2023-03-03 20:0:00'),
+	(4,888, '2023-03-03 20:0:00'),
+	(5,1333,'2023-03-03 20:0:00');
