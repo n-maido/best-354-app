@@ -54,7 +54,7 @@ app.get('/', async (req, res) => {
 
     relations.push({ name: "Platelets", data: await getTableData("platelets") });
 
-    // relations.push({ name: "Blood Tested", data: await getTableData("testblood") }); //missing
+    relations.push({ name: "Blood Tested", data: await getTableData("testblood") }); 
 
     relations.push({ name: "Donations-Donors", data: await getTableData("donate_donor") });
 
@@ -64,9 +64,9 @@ app.get('/', async (req, res) => {
 
     relations.push({ name: "Blood Transported From Blood Bank to Hospital", data: await getTableData("transporttohospital") });
 
-    // relations.push({ name: "Blood Disposed", data: await getTableData("disposeblood") }); //missing
+    relations.push({ name: "Blood Disposed", data: await getTableData("disposeblood") }); 
 
-    // relations.push({ name: "Transfusions", data: await getTableData("transfusion") }); //missing
+    relations.push({ name: "Transfusions", data: await getTableData("transfusion") });
 
     relations.push({ name: "Volunteers", data: await getTableData("volunteer") });
 

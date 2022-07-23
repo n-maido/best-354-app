@@ -346,10 +346,10 @@ INSERT INTO public.conduct_questionnaire(
 	vid, donorid)
 	VALUES 
 	(1,3),
-	(2,4),
-	(3,1),
-	(4,5),
-	(5,2);
+	(1,4),
+	(2,1),
+	(2,5),
+	(2,2);
 
 INSERT INTO public.donate_donor(
 	donorid, "time", driveid, instno)
@@ -409,3 +409,12 @@ INSERT INTO public.disposeblood(
 	(3,335, '2023-03-03 20:0:00'),
 	(4,888, '2023-03-03 20:0:00'),
 	(5,1333,'2023-03-03 20:0:00');
+
+INSERT INTO public.testblood(
+	bloodid, instno, phlebid, "time")
+	VALUES 
+	(444, 1, 1000, '2019-11-25 21:25:16'),
+	(999, 2, 2000, '2017-03-22 08:40:34'),
+	(1444, 3, 3000, '2016-08-18 21:57:35'),
+	(1445, 4, 4000, '2021-11-11 18:22:11'),
+	(1446, 5, 5000, '2019-05-01 06:20:01');
