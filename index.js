@@ -9,7 +9,7 @@ var app = express()
 const { Pool } = require('pg')
 const config = {
   // db name is bbdb
-  connectionString: process.env.DATABASE_URL || "postgres://postgres:root@localhost/bbdb"
+  connectionString: process.env.DATABASE_URL //|| "postgres://postgres:root@localhost/bbdb"
 }
 
 // if we're connected to the db on heroku, add this ssl setting
