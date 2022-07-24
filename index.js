@@ -54,7 +54,7 @@ app.get('/', async (req, res) => {
 
     relations.push({ name: "Platelets", data: await getTableData("platelets") });
 
-    relations.push({ name: "Blood Tested", data: await getTableData("testblood") }); 
+    relations.push({ name: "Blood Tested", data: await getTableData("testblood") }); //
 
     relations.push({ name: "Donations-Donors", data: await getTableData("donate_donor") });
 
@@ -64,9 +64,9 @@ app.get('/', async (req, res) => {
 
     relations.push({ name: "Blood Transported From Blood Bank to Hospital", data: await getTableData("transporttohospital") });
 
-    relations.push({ name: "Blood Disposed", data: await getTableData("disposeblood") }); 
+    relations.push({ name: "Blood Disposed", data: await getTableData("disposeblood") }); //
 
-    relations.push({ name: "Transfusions", data: await getTableData("transfusion") });
+    relations.push({ name: "Transfusions", data: await getTableData("transfusion") }); //
 
     relations.push({ name: "Volunteers", data: await getTableData("volunteer") });
 
@@ -269,5 +269,21 @@ app.get('/Conducted-Questionnaires', async (req, res) => {
     res.send(error)
   }
 })
+
+
+//NESTED "GROUP BY" QUERIES - MISHA 
+//Query: Display quantities of blood depending on chosen attributes
+//Example: select bloodtype, sum(quantity) from blood_bag where bloodstatus='Frozen' group by bloodtype;
+//Example: select bloodtype, sum(quantity) from blood_bag group by bloodtype;
+//Logic: How to input the query and then see the resulting table?
+app.get('/Nested', async (req, res) => {
+  try {
+    const data = { name: "Conducted Questionnaires", data: await getTableData("conduct_questionnaire") }
+    res.render('pages/table', data)
+  } catch (error) {
+    res.send(error)
+  }
+})
+
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
