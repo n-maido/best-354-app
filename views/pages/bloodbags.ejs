@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blood Bags</title>
+</head>
+<body>
+  <h1><%= name %></h1>
+  <!--Generate table-->
+    <table>
+        <!--Generate headings-->
+        <tr>
+            <% Object.keys(data[0]).forEach(function(item) { %>
+            <th><%= item %></th>
+            <% }); %>
+        </tr>
+        <!--Populate with data-->
+        <% data.forEach(function(item) { %>
+            <tr>
+                <% Object.keys(item).forEach(function(i) { %>
+                    <td><%= item[i] %></td>
+                <% }); %>
+            </tr>
+        <% }); %>
+    </table>
+    <h4>View quantity of blood by status</h4>
+    <form action="/NestedFrozen" >
+        <input type="submit" value="Frozen" />
+    </form>
+    <form action="/NestedReady For Transport" >
+        <input type="submit" value="Ready For Transport"/>
+    </form>
+    <form action="/NestedDisposed" >
+        <input type="submit" value="Disposed"/>
+    </form>
+    <form action="/NestedTesting" >
+        <input type="submit" value="Testing"/>
+    </form>
+
+    <% if(name !== "Blood Bags"){ %>
+        <form action="/Blood-Bags" >
+            <input type="submit" value="Go Back to Blood Bags Table" />
+        </form>
+     <% } %>
+    <% if(name === "Blood Bags"){ %>
+        <form action="/" >
+            <input type="submit" value="Back To Main Page" />
+        </form>
+    <% } %>
+</body>
+</html>

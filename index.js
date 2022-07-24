@@ -32,6 +32,19 @@ async function getTableData(tableName) {
   }
 }
 
+//NESTED AGGREGATION WITH GROUP-BY
+async function getNestedData(tableName, bloodstatus) {
+  try {
+    var nestedQuery = `select bloodtype, sum(quantity) from blood_bag where 
+    bloodstatus='${bloodstatus}' group by bloodtype;`
+    const result = await pool.query(nestedQuery);
+    return result.rows
+  } catch (error) {
+    res.send(error)
+  }
+}
+
+
 // GET
 // main page
 app.get('/', async (req, res) => {
@@ -78,7 +91,6 @@ app.get('/', async (req, res) => {
 
     relations.push({ name: "Conducted Questionnaires", data: await getTableData("conduct_questionnaire") });
 
-    console.log(relations.length)
 
     const data = {relations: relations}
     res.render('pages/index', data)
@@ -129,7 +141,7 @@ app.get('/Phlebotomists', async (req, res) => {
 app.get('/Blood-Bags', async (req, res) => {
   try {
     const data = { name: "Blood Bags", data: await getTableData("blood_bag") }
-    res.render('pages/table', data)
+    res.render('pages/bloodbags', data)
   } catch (error) {
     res.send(error)
   }
@@ -162,14 +174,14 @@ app.get('/Platelets', async (req, res) => {
   }
 })
 
-// app.get('/Blood-Tested', async (req, res) => {
-//   try {
-//     const data = { name: "Blood Tested", data: await getTableData("testblood") }
-//     res.render('pages/table', data)
-//   } catch (error) {
-//     res.send(error)
-//   }
-// })
+ app.get('/Blood-Tested', async (req, res) => {
+   try {
+     const data = { name: "Blood Tested", data: await getTableData("testblood") }
+     res.render('pages/table', data)
+   } catch (error) {
+     res.send(error)
+   }
+ })
 
 app.get('/Donations-Donors', async (req, res) => {
   try {
@@ -207,23 +219,23 @@ app.get('/Blood-Transported-From-Blood-Bank-to-Hospital', async (req, res) => {
   }
 })
 
-// app.get('/Blood-Disposed', async (req, res) => {
-//   try {
-//     const data = { name: "Blood Disposed", data: await getTableData("disposeblood") }
-//     res.render('pages/table', data)
-//   } catch (error) {
-//     res.send(error)
-//   }
-// })
+ app.get('/Blood-Disposed', async (req, res) => {
+   try {
+     const data = { name: "Blood Disposed", data: await getTableData("disposeblood") }
+     res.render('pages/table', data)
+   } catch (error) {
+     res.send(error)
+   }
+ })
 
-// app.get('/Transfusions', async (req, res) => {
-//   try {
-//     const data = { name: "Transfusions", data: await getTableData("transfusion") }
-//     res.render('pages/table', data)
-//   } catch (error) {
-//     res.send(error)
-//   }
-// })
+ app.get('/Transfusions', async (req, res) => {
+   try {
+     const data = { name: "Transfusions", data: await getTableData("transfusion") }
+     res.render('pages/table', data)
+   } catch (error) {
+     res.send(error)
+   }
+ })
 
 app.get('/Volunteers', async (req, res) => {
   try {
@@ -276,10 +288,10 @@ app.get('/Conducted-Questionnaires', async (req, res) => {
 //Example: select bloodtype, sum(quantity) from blood_bag where bloodstatus='Frozen' group by bloodtype;
 //Example: select bloodtype, sum(quantity) from blood_bag group by bloodtype;
 //Logic: How to input the query and then see the resulting table?
-app.get('/Nested', async (req, res) => {
+app.get('/Nested:BloodStatus', async (req, res) => {
   try {
-    const data = { name: "Conducted Questionnaires", data: await getTableData("conduct_questionnaire") }
-    res.render('pages/table', data)
+    const data = { name: `Blood Bags: ${req.params.BloodStatus}`, data: await getNestedData("conduct_questionnaire", req.params.BloodStatus) }
+    res.render('pages/bloodbags', data)
   } catch (error) {
     res.send(error)
   }
