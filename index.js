@@ -44,6 +44,18 @@ async function getNestedData(tableName, bloodstatus) {
   }
 }
 
+//JOIN QUERY
+async function getJoinData() {
+  try {
+    var nestedQuery = `Select transporttobloodbank.bloodid, driveid, instno, transporttobloodbank.time as "Blood Bank Delivery Time", bankinstno, 
+    hospitalinstno, transporttohospital.time as "Hospital Delivery Time" from transporttobloodbank inner join transporttohospital on 
+    transporttobloodbank.bloodid = transporttohospital.bloodid;`
+    const result = await pool.query(nestedQuery);
+    return result.rows
+  } catch (error) {
+    res.send(error)
+  }
+}
 
 // GET
 // main page
@@ -283,11 +295,8 @@ app.get('/Conducted-Questionnaires', async (req, res) => {
 })
 
 
-//NESTED "GROUP BY" QUERIES - MISHA 
-//Query: Display quantities of blood depending on chosen attributes
-//Example: select bloodtype, sum(quantity) from blood_bag where bloodstatus='Frozen' group by bloodtype;
-//Example: select bloodtype, sum(quantity) from blood_bag group by bloodtype;
-//Logic: How to input the query and then see the resulting table?
+//NESTED "GROUP BY" QUERY - MISHA 
+//Query: Display quantitiy of blood by bloodtype
 app.get('/Nested:BloodStatus', async (req, res) => {
   try {
     const data = { name: `Blood Bags: ${req.params.BloodStatus}`, data: await getNestedData("conduct_questionnaire", req.params.BloodStatus) }
@@ -296,6 +305,14 @@ app.get('/Nested:BloodStatus', async (req, res) => {
     res.send(error)
   }
 })
-
+//JOIN QUERY - MISHA
+app.get('/Join', async (req, res) => {
+  try {
+    const data = { name: `Blood Bags Transported History`, data: await getJoinData()}
+    res.render('pages/table', data)
+  } catch (error) {
+    res.send(error)
+  }
+})
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`))

@@ -25,6 +25,12 @@
             </tr>
         <% }); %>
     </table>
+    <% if(name === "Blood Transported From Blood Drive to Blood Bank"|| name === "Blood Transported From Blood Bank to Hospital" ){ %>
+        <form action="/Join" >
+            <input type="submit" value="View Entire Blood Transport History" />
+        </form>
+     <% } %>
+
     <form action="/" >
         <input type="submit" value="Back To Main Page" />
     </form>
