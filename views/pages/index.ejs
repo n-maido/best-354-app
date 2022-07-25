@@ -4,16 +4,20 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
   <title>Blood Bank Database</title>
 </head>
 <body>
   <h1>Blood Bank Database</h1>
   <!--Generate tables-->
   <% relations.forEach(function(r) { %>
-    <a href="/<%=r.name.replace(/\s+/g, '-')%>">
-      <h3><%= r.name %></h3>
-    </a>
-    <table>
+    <div class="single-table-name">
+      <a href="/<%=r.name.replace(/\s+/g, '-')%>">
+        <h3><%= r.name %></h3>
+      </a>
+    </div>
+
+    <table class="custom-table">
       <!--Generate headings-->
       <tr>
         <% Object.keys(r.data[0]).forEach(function(item) { %>
@@ -22,11 +26,15 @@
       </tr>
       <!--Populate with data-->
       <% r.data.forEach(function(item) { %>
-        <tr>
-          <% Object.keys(item).forEach(function(i) { %>
-            <td><%= item[i] %></td>
-          <% }); %>
-        </tr>
+        <div>
+          <tr>
+            <% Object.keys(item).forEach(function(i) { %>
+                  <td class="attribute-element">
+                      <%= item[i] %>
+                  </td>
+            <% }); %>
+          </tr>
+        </div>
       <% }); %>
       </table>
   <% }); %>
