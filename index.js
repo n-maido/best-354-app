@@ -47,10 +47,23 @@ async function getNestedData(tableName, bloodstatus) {
 //JOIN QUERY
 async function getJoinData() {
   try {
-    var nestedQuery = `Select transporttobloodbank.bloodid, driveid, instno, transporttobloodbank.time as "Blood Bank Delivery Time", bankinstno, 
+    var joinQuery = `Select transporttobloodbank.bloodid, driveid, instno, transporttobloodbank.time as "Blood Bank Delivery Time", bankinstno, 
     hospitalinstno, transporttohospital.time as "Hospital Delivery Time" from transporttobloodbank inner join transporttohospital on 
     transporttobloodbank.bloodid = transporttohospital.bloodid;`
-    const result = await pool.query(nestedQuery);
+    const result = await pool.query(joinQuery);
+    return result.rows
+  } catch (error) {
+    res.send(error)
+  }
+}
+
+async function getDivisionData() {
+  try {
+    var divisionQuery = `SELECT * FROM Volunteer WHERE name not in 
+    (SELECT name FROM ((SELECT name, vID FROM (SELECT vID Conduct_Questionnaire) 
+    AS p CROSS JOIN (SELECT DISTINCT name FROM Volunteer) AS sp) EXCEPT 
+    (SELECT name, vID FROM Volunteer)) AS r);`
+    const result = await pool.query(divisionQuery);
     return result.rows
   } catch (error) {
     res.send(error)
@@ -305,10 +318,20 @@ app.get('/Nested:BloodStatus', async (req, res) => {
     res.send(error)
   }
 })
+
 //JOIN QUERY - MISHA
 app.get('/Join', async (req, res) => {
   try {
     const data = { name: `Blood Bags Transported History`, data: await getJoinData()}
+    res.render('pages/table', data)
+  } catch (error) {
+    res.send(error)
+  }
+})
+
+app.get('/Divide', async (req, res) => {
+  try {
+    const data = { name: `Divide Operator: Volunteer/Conduct_Questionnaire`, data: await getJoinData()}
     res.render('pages/table', data)
   } catch (error) {
     res.send(error)
