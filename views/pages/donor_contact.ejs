@@ -41,13 +41,14 @@
             </select>
 
             <label>Value: </label>
-            <input type="text" name="value">
-            <input type="button" value="Search" onClick="validateInputs(this.form)" class="link-button">
+            <input type="text" name="value" required>
+            <!-- <input type="button" value="Search" onClick="validateInputs(this.form)" class="link-button"> -->
+            <input type="submit" value="Search">
         </form>
-        
+
         <% if(name !== "Donor Contact"){ %>
-            <form action="/Blood-Bags" >
-                <input type="submit" value="Back to Blood Bags" class="link-button"/>
+            <form action="/Donor-Contact" >
+                <input type="submit" value="Back to Donor Contact" class="link-button"/>
             </form>
         <% } %>
         <% if(name === "Donor Contact"){ %>

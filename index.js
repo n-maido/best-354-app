@@ -22,6 +22,8 @@ var pool = new Pool(config)
 app.use(express.static(path.join(__dirname, 'public')))
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
+app.use(express.json())
+app.use(express.urlencoded({extended:false}))
 
 async function getTableData(tableName) {
   try {
@@ -64,6 +66,16 @@ async function getDivisionData() {
     AS p CROSS JOIN (SELECT DISTINCT name FROM Volunteer) AS sp) EXCEPT 
     (SELECT name, vID FROM Volunteer)) AS r);`
     const result = await pool.query(divisionQuery);
+    return result.rows
+  } catch (error) {
+    res.send(error)
+  }
+}
+
+// SELECT QUERY
+async function getSelectData(field, value) {
+  try {
+    const result = await pool.query(`SELECT * FROM donor_contact WHERE ${field}='${value}'`);
     return result.rows
   } catch (error) {
     res.send(error)
@@ -342,8 +354,10 @@ app.get('/Divide', async (req, res) => {
 // Query: Search for rows by a field value
 // e.g. Search for rows where name="samantha"
 app.post('/Select', async (req, res) => {
+  let field = req.body.field;
+  let value = req.body.value;
   try {
-    const data = { name: `Divide Operator: Volunteer/Conduct_Questionnaire`, data: await getJoinData()}
+    const data = { name: `Search results for ${field} = ${value}`, data: await getSelectData(field, value)}
     res.render('pages/table', data)
   } catch (error) {
     res.send(error)

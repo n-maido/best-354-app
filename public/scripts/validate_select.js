@@ -5,8 +5,8 @@ function validateInputs(form) {
     let alert_msg = "An input is missing for: \n";
     let missingFields = [];
 
-    console.log(form.name.value);
-    if (form.name.value === "") {
+    console.log(form.value.value);
+    if (form.value.value === "") {
         console.log("empty")
         alert = true;
         missingFields.push("Name");
