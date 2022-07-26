@@ -3,7 +3,7 @@ body {
     background-color: #19191d;
     font-weight: 300; }
   
-  p,th {
+  p,th, label {
     color: #b3b3b3;
     font-weight: 300; }
   

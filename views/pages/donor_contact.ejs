@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+  <script type="text/javascript" src="/scripts/validate_select.js" defer></script>
+  <title>Donor Contact</title>
+</head>
+<body>
+  <h1><%= name %></h1>
+  <!--Generate table-->
+    <table class="custom-table">
+        <!--Generate headings-->
+        <tr>
+            <% Object.keys(data[0]).forEach(function(item) { %>
+            <th><%= item %></th>
+            <% }); %>
+        </tr>
+        <!--Populate with data-->
+        <% data.forEach(function(item) { %>
+            <tr>
+                <% Object.keys(item).forEach(function(i) { %>
+                    <td class="attribute-element"><%= item[i] %></td>
+                <% }); %>
+            </tr>
+        <% }); %>
+    </table>
+    <div class="single-table-name">
+        <h4>Search for a row by field</h4>
+    </div>
+    <div class="buttons-container">
+        <form method="post" action="/Select" >
+            <label>Field: </label>
+            <select name="field" id="">
+                <option>email</option>
+                <option>phoneno</option>
+                <option>address</option>
+                <option>name</option>
+            </select>
+
+            <label>Value: </label>
+            <input type="text" name="value">
+            <input type="button" value="Search" onClick="validateInputs(this.form)" class="link-button">
+        </form>
+        
+        <% if(name !== "Donor Contact"){ %>
+            <form action="/Blood-Bags" >
+                <input type="submit" value="Back to Blood Bags" class="link-button"/>
+            </form>
+        <% } %>
+        <% if(name === "Donor Contact"){ %>
+            <form action="/" >
+                <input type="submit" value="Back To Main Page" class="link-button"/>
+            </form>
+    </div>
+    <% } %>
+</body>
+</html>

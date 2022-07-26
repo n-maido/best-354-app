@@ -9,7 +9,7 @@ var app = express()
 const { Pool } = require('pg')
 const config = {
   // db name is bbdb
-  connectionString: process.env.DATABASE_URL //|| "postgres://postgres:root@localhost/bbdb"
+  connectionString: process.env.DATABASE_URL || "postgres://postgres:root@localhost/bbdb"
 }
 
 // if we're connected to the db on heroku, add this ssl setting
@@ -283,7 +283,7 @@ app.get('/Donors', async (req, res) => {
 app.get('/Donor-Contact', async (req, res) => {
   try {
     const data = { name: "Donor Contact", data: await getTableData("donor_contact") }
-    res.render('pages/table', data)
+    res.render('pages/donor_contact', data)
   } catch (error) {
     res.send(error)
   }
@@ -330,6 +330,18 @@ app.get('/Join', async (req, res) => {
 })
 
 app.get('/Divide', async (req, res) => {
+  try {
+    const data = { name: `Divide Operator: Volunteer/Conduct_Questionnaire`, data: await getJoinData()}
+    res.render('pages/table', data)
+  } catch (error) {
+    res.send(error)
+  }
+})
+
+// SELECT QUERY
+// Query: Search for rows by a field value
+// e.g. Search for rows where name="samantha"
+app.post('/Select', async (req, res) => {
   try {
     const data = { name: `Divide Operator: Volunteer/Conduct_Questionnaire`, data: await getJoinData()}
     res.render('pages/table', data)
