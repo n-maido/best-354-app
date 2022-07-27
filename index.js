@@ -364,4 +364,20 @@ app.post('/Select', async (req, res) => {
   }
 })
 
+// PROJECT QUERY
+// Query: Select which columns to display
+app.post('/Project', async (req, res) => {
+  // grab selected fields
+  let body = JSON.parse(JSON.stringify(req.body))
+  let cols = Object.keys(body)
+  console.log(cols);
+  
+  try {
+    const data = { name: `Displaying columns`, data: await getSelectData('name', 'Alice Cullen')}
+    res.render('pages/table', data)
+  } catch (error) {
+    res.send(error)
+  }
+})
+
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
