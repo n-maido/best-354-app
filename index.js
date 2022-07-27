@@ -9,7 +9,7 @@ var app = express()
 const { Pool } = require('pg')
 const config = {
   // db name is bbdb
-  connectionString: process.env.DATABASE_URL //|| "postgres://postgres:root@localhost/bbdb"
+  connectionString: process.env.DATABASE_URL || "postgres://postgres:root@localhost/bbdb"
 }
 
 // if we're connected to the db on heroku, add this ssl setting
@@ -157,7 +157,7 @@ app.get('/Hospitals', async (req, res) => {
 app.get('/Phlebotomists', async (req, res) => {
   try {
     const data = { name: "Phlebotomists", data: await getTableData("phlebotomist") }
-    res.render('pages/table', data)
+    res.render('pages/phlebotomists', data)
   } catch (error) {
     res.send(error)
   }
@@ -338,4 +338,50 @@ app.get('/Divide', async (req, res) => {
   }
 })
 
+//Delete Query
+app.post('/deletePhleb/:phlebid', (req,res)=>{
+  var getPhleb = 'DELETE FROM phlebotomist WHERE phlebid=${req.params.phlebid};'
+  pool.query(getPhleb, (error, result) => {
+    if (error){
+      res.end(error)
+    }
+    else{
+      res.redirect('/phlebotomist')
+    }
+
+  })
+})
+//Insert
+// app.get('/InserPhleb', (req,res)=>{
+//   var getPhleb = 'INSERT INTO phlebotomist (phlebid,name, instno) VALUES (x,y,z);';
+//
+//   pool.query(getPhleb, (error, result) => {
+//     if (error){
+//       res.end(error)
+//     }
+//     else{
+//       var data = {results: result.rows}
+//       res.render('pages/InsertPhleb.ejs', data)
+//     }
+//
+//   })
+// })
+
+//Update
+// app.get('/rectanglePage:id', (req,res)=>{
+//   var getRectangles = 'SELECT * FROM rec WHERE ' + '"id"' + ' = ' + "'" + req.params.id + "';"
+//   pool.query(getRectangles, (error, result) => {
+//     if (error){
+//       res.end(error)
+//     }
+//     else{
+//       var data = {results: result.rows}
+//       console.log(data.results)
+//       console.log("MY LOG ----------------------------" +   data.results[0].name.toString())
+//       res.render('pages/rectangleEditPage.ejs', data)
+//     }
+//
+//   })
+// })
+// app.get()
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
