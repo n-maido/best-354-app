@@ -82,6 +82,17 @@ async function getSelectData(field, value) {
   }
 }
 
+// PROJECT QUERY
+async function getProjectData(cols) {
+  try {
+    const result = await pool.query(`SELECT ${cols} FROM donor_contact`);
+    return result.rows
+  } catch (error) {
+    res.send(error)
+  }
+}
+
+
 // GET
 // main page
 app.get('/', async (req, res) => {
@@ -368,12 +379,12 @@ app.post('/Select', async (req, res) => {
 // Query: Select which columns to display
 app.post('/Project', async (req, res) => {
   // grab selected fields
-  let body = JSON.parse(JSON.stringify(req.body))
-  let cols = Object.keys(body)
+  let body = JSON.parse(JSON.stringify(req.body)) // format: {'selection1': on, 'selection2': on}
+  let cols = Object.keys(body).toString() // format: selection1, selection2
   console.log(cols);
   
   try {
-    const data = { name: `Displaying columns`, data: await getSelectData('name', 'Alice Cullen')}
+    const data = { name: `Displaying columns: ${cols}`, data: await getProjectData(cols)}
     res.render('pages/table', data)
   } catch (error) {
     res.send(error)
