@@ -22,6 +22,8 @@ var pool = new Pool(config)
 app.use(express.static(path.join(__dirname, 'public')))
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
+app.use(express.json())
+app.use(express.urlencoded({extended:false}))
 
 async function getTableData(tableName) {
   try {
@@ -69,6 +71,37 @@ async function getDivisionData() {
     res.send(error)
   }
 }
+
+// SELECT QUERY
+async function getSelectData(field, value) {
+  try {
+    const result = await pool.query(`SELECT * FROM donor_contact WHERE ${field}='${value}'`);
+    return result.rows
+  } catch (error) {
+    res.send(error)
+  }
+}
+
+// PROJECT QUERY
+async function getProjectData(cols) {
+  try {
+    const result = await pool.query(`SELECT ${cols} FROM donor_contact`);
+    return result.rows
+  } catch (error) {
+    res.send(error)
+  }
+}
+
+// AGGREGATION QUERY
+async function getAggData(agg) {
+  try {
+    const result = await pool.query(`SELECT * FROM donate_blood WHERE time=(SELECT ${agg}(time) FROM donate_blood)`);
+    return result.rows
+  } catch (error) {
+    res.send(error)
+  }
+}
+
 
 // GET
 // main page
@@ -220,7 +253,7 @@ app.get('/Donations-Donors', async (req, res) => {
 app.get('/Donations-Blood', async (req, res) => {
   try {
     const data = { name: "Donations-Blood", data: await getTableData("donate_blood") }
-    res.render('pages/table', data)
+    res.render('pages/donate_blood', data)
   } catch (error) {
     res.send(error)
   }
@@ -283,7 +316,7 @@ app.get('/Donors', async (req, res) => {
 app.get('/Donor-Contact', async (req, res) => {
   try {
     const data = { name: "Donor Contact", data: await getTableData("donor_contact") }
-    res.render('pages/table', data)
+    res.render('pages/donor_contact', data)
   } catch (error) {
     res.send(error)
   }
@@ -344,8 +377,8 @@ app.post('/deletePhleb/:phlebid', async (req,res) => {
     var getPhleb = `DELETE FROM phlebotomist WHERE phlebid=${req.params.phlebid.substring(1)};`
     let result = await pool.query(getPhleb)//, (error, result)) => {
     // TODO: get new phlebotomist table and render
-    const data = { name: "Phlebotomists", data: await getTableData("phlebotomist") }
-    res.redirect('pages/table', data)
+    // const data = { name: "Phlebotomists", data: await getTableData("phlebotomist") }
+    // res.redirect('pages/table', data)
     
 
   } catch(error) {
@@ -384,4 +417,45 @@ app.post('/deletePhleb/:phlebid', async (req,res) => {
 //   })
 // })
 // app.get()
+// SELECT QUERY
+// Query: Search for rows by a field value
+// e.g. Search for rows where name="samantha"
+app.post('/Select', async (req, res) => {
+  let field = req.body.field;
+  let value = req.body.value;
+  try {
+    const data = { name: `Search results for ${field} = ${value}`, data: await getSelectData(field, value)}
+    res.render('pages/table', data)
+  } catch (error) {
+    res.send(error)
+  }
+})
+
+// PROJECT QUERY
+// Query: Select which columns to display
+app.post('/Project', async (req, res) => {
+  // grab selected fields
+  let body = JSON.parse(JSON.stringify(req.body)) // format: {'selection1': on, 'selection2': on}
+  let cols = Object.keys(body).toString() // format: selection1, selection2
+  
+  try {
+    const data = { name: `Displaying columns: ${cols}`, data: await getProjectData(cols)}
+    res.render('pages/table', data)
+  } catch (error) {
+    res.send(error)
+  }
+})
+
+// AGGREGATION QUERY
+// Query: Find the oldest (min) or the most recent (max) donation time
+app.post('/Aggregation', async (req, res) => {
+  let agg = req.body.agg === "oldest" ? "min" : "max"
+  try {
+    const data = { name: `${req.body.agg} Donation`, data: await getAggData(agg)}
+    res.render('pages/table', data)
+  } catch (error) {
+    res.send(error)
+  }
+})
+
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
