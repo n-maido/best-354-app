@@ -339,20 +339,20 @@ app.get('/Divide', async (req, res) => {
 })
 
 //Delete Query
-app.post('/deletePhleb/:phlebid', (req,res)=>{
-  var getPhleb = 'DELETE FROM phlebotomist WHERE phlebid=${req.params.phlebid};'
-  pool.query(getPhleb, (error, result) => {
-    if (error){
-      res.end(error)
-    }
-    else{
-      res.redirect('/phlebotomist')
-    }
+app.post('/deletePhleb/:phlebid', async (req,res) => {
+  try {
+    var getPhleb = `DELETE FROM phlebotomist WHERE phlebid=${req.params.phlebid.substring(1)};`
+    let result = await pool.query(getPhleb)//, (error, result)) => {
+    // TODO: get new phlebotomist table and render
+    const data = { name: "Phlebotomists", data: await getTableData("phlebotomist") }
+    res.redirect('pages/table', data)
+    
 
-  })
-})
+  } catch(error) {
+    res.send(error)
+}})
 //Insert
-// app.get('/InserPhleb', (req,res)=>{
+// app.get('/InsertPhleb', (req,res)=>{
 //   var getPhleb = 'INSERT INTO phlebotomist (phlebid,name, instno) VALUES (x,y,z);';
 //
 //   pool.query(getPhleb, (error, result) => {
