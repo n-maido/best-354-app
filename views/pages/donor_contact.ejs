@@ -32,7 +32,7 @@
         <h4>Search for a row by field</h4>
     </div>
     <div class="buttons-container">
-        <form method="post" action="/Select" >
+        <form method="post" action="/Select">
             <label>Field: </label>
             <select name="field" id="">
                 <option>email</option>
@@ -41,11 +41,11 @@
                 <option>name</option>
             </select>
 
-            <label>Value: </label>
+            <label style="margin-left: 15px;">Value: </label>
             <!-- <input type="generateInput(this.form)" name="value" required> -->
             <input type="text" name="value" required> 
             <!-- <input type="button" value="Search" onClick="validateInputs(this.form)" class="link-button"> -->
-            <input type="submit" value="Search" class="link-button">
+            <input type="submit" value="Search" class="link-button" style="height: 30px; width: 100px; margin-left: 15px;">
         </form>
     </div>
     <!--PROJECTION-->
@@ -60,10 +60,10 @@
                     <%= item %>
                 </label>
                 <% }); %> 
-            <input type="submit" value="Display" class="link-button">
+            <input type="submit" value="Display" class="link-button" style="height: 30px; width: 100px; margin-left: 15px;">
         </form>
     </div>
-    <div class=""buttons-container>
+    <div class="buttons-container">
         <% if(name !== "Donor Contact"){ %>
             <form action="/Donor-Contact" >
                 <input type="submit" value="Back to Donor Contact" class="link-button"/>
@@ -73,7 +73,8 @@
             <form action="/" >
                 <input type="submit" value="Back To Main Page" class="link-button"/>
             </form>
+        <% } %>
     </div>
-    <% } %>
+    
 </body>
 </html>

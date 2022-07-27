@@ -32,16 +32,16 @@
         <h4>Find the oldest or most recent donation</h4>
     </div>
     <div class="buttons-container">
-        <form method="post" action="/Aggregation" >
+        <form method="post" action="/Aggregation" class="form-input">
             <select name="agg" id="">
                 <option>Oldest</option>
                 <option>Most recent</option>
             </select>
             <label>donation</label>         
-            <input type="submit" value="Search" class="link-button">
+            <input type="submit" value="Search" class="link-button" style="height: 30px; width: 100px;">
         </form>
     </div>
-    <div class=""buttons-container>
+    <div class="buttons-container">
         <% if(name !== "Donations-Blood"){ %>
             <form action="/Donations-Blood" >
                 <input type="submit" value="Back to Donations (Blood)" class="link-button"/>

@@ -391,7 +391,6 @@ app.post('/Project', async (req, res) => {
   // grab selected fields
   let body = JSON.parse(JSON.stringify(req.body)) // format: {'selection1': on, 'selection2': on}
   let cols = Object.keys(body).toString() // format: selection1, selection2
-  console.log(cols);
   
   try {
     const data = { name: `Displaying columns: ${cols}`, data: await getProjectData(cols)}
