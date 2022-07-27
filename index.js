@@ -92,6 +92,16 @@ async function getProjectData(cols) {
   }
 }
 
+// AGGREGATION QUERY
+async function getAggData(agg) {
+  try {
+    const result = await pool.query(`SELECT * FROM donate_blood WHERE time=(SELECT ${agg}(time) FROM donate_blood)`);
+    return result.rows
+  } catch (error) {
+    res.send(error)
+  }
+}
+
 
 // GET
 // main page
@@ -243,7 +253,7 @@ app.get('/Donations-Donors', async (req, res) => {
 app.get('/Donations-Blood', async (req, res) => {
   try {
     const data = { name: "Donations-Blood", data: await getTableData("donate_blood") }
-    res.render('pages/table', data)
+    res.render('pages/donate_blood', data)
   } catch (error) {
     res.send(error)
   }
@@ -385,6 +395,18 @@ app.post('/Project', async (req, res) => {
   
   try {
     const data = { name: `Displaying columns: ${cols}`, data: await getProjectData(cols)}
+    res.render('pages/table', data)
+  } catch (error) {
+    res.send(error)
+  }
+})
+
+// AGGREGATION QUERY
+// Query: Find the oldest (min) or the most recent (max) donation time
+app.post('/Aggregation', async (req, res) => {
+  let agg = req.body.agg === "oldest" ? "min" : "max"
+  try {
+    const data = { name: `${req.body.agg} Donation`, data: await getAggData(agg)}
     res.render('pages/table', data)
   } catch (error) {
     res.send(error)

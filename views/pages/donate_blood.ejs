@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+  <script type="text/javascript" src="/scripts/validate_select.js" defer></script>
+  <title>Donate Blood</title>
+</head>
+<body>
+  <h1><%= name %></h1>
+  <!--Generate table-->
+    <table class="custom-table">
+        <!--Generate headings-->
+        <tr>
+            <% Object.keys(data[0]).forEach(function(item) { %>
+            <th><%= item %></th>
+            <% }); %>
+        </tr>
+        <!--Populate with data-->
+        <% data.forEach(function(item) { %>
+            <tr>
+                <% Object.keys(item).forEach(function(i) { %>
+                    <td class="attribute-element"><%= item[i] %></td>
+                <% }); %>
+            </tr>
+        <% }); %>
+    </table>
+    <!--AGGREGATION-->
+    <div class="single-table-name">
+        <h4>Find the oldest or most recent donation</h4>
+    </div>
+    <div class="buttons-container">
+        <form method="post" action="/Aggregation" >
+            <select name="agg" id="">
+                <option>Oldest</option>
+                <option>Most recent</option>
+            </select>
+            <label>donation</label>         
+            <input type="submit" value="Search" class="link-button">
+        </form>
+    </div>
+    <div class=""buttons-container>
+        <% if(name !== "Donations-Blood"){ %>
+            <form action="/Donations-Blood" >
+                <input type="submit" value="Back to Donations (Blood)" class="link-button"/>
+            </form>
+        <% } %>
+        <% if(name === "Donations-Blood"){ %>
+            <form action="/" >
+                <input type="submit" value="Back To Main Page" class="link-button"/>
+            </form>
+    </div>
+    <% } %>
+</body>
+</html>
