@@ -38,11 +38,11 @@
                 <input type="submit" value="Back to Donations (Blood)" class="link-button" style="width: 200px"/>
             </form>
         <!--Misha's queries-->
-        <% } else if(name === "Blood Transported From Blood Drive to Blood Bank"|| name === "Blood Transported From Blood Bank to Hospital" ){ %>
+        <% } else if (name === "Blood Transported From Blood Drive to Blood Bank" || name === "Blood Transported From Blood Bank to Hospital" ){ %>
+            <%console.log("hit") %>
             <form action="/Join" >
                 <input type="submit" value="Transport History" class="link-button"/>
             </form>
-        <% } %>
         <!--Default-->
         <% } else {%>
             <form action="/" >
