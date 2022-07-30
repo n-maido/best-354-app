@@ -9,7 +9,10 @@ var app = express()
 const { Pool } = require('pg')
 const config = {
   // db name is bbdb
-  connectionString: process.env.DATABASE_URL || "postgres://postgres:root@localhost/bbdb"
+  connectionString: 'postgres://postgres:2038@localhost/bbdb'
+
+  // process.env.DATABASE_URL ||
+
 }
 
 // if we're connected to the db on heroku, add this ssl setting
@@ -371,51 +374,63 @@ app.get('/Divide', async (req, res) => {
   }
 })
 
-//Delete Query
+// DELETE QUERY
 app.post('/deletePhleb/:phlebid', async (req,res) => {
+  // console.log(req.params.phlebid.substring(1))
   try {
     var getPhleb = `DELETE FROM phlebotomist WHERE phlebid=${req.params.phlebid.substring(1)};`
-    let result = await pool.query(getPhleb)//, (error, result)) => {
-    // TODO: get new phlebotomist table and render
-    // const data = { name: "Phlebotomists", data: await getTableData("phlebotomist") }
-    // res.redirect('pages/table', data)
-    
-
+    let result = await pool.query(getPhleb)
+    const data = { name: `Phlebotomists`, data: await getTableData("phlebotomist") }
+    // res.redirect(req.protocol+ 'pages/table', data)
+    res.redirect(req.protocol + '://' + req.get('host') + '/phlebotomists' );
   } catch(error) {
     res.send(error)
 }})
-//Insert
-// app.get('/InsertPhleb', (req,res)=>{
-//   var getPhleb = 'INSERT INTO phlebotomist (phlebid,name, instno) VALUES (x,y,z);';
-//
-//   pool.query(getPhleb, (error, result) => {
-//     if (error){
-//       res.end(error)
-//     }
-//     else{
-//       var data = {results: result.rows}
-//       res.render('pages/InsertPhleb.ejs', data)
-//     }
-//
-//   })
-// })
+// INSERT QUERY
+app.post('/InsertPhleb', async (req,res)=>{
+  let name = req.body.phlebName
+  let instNo = req.body.instNo
 
-//Update
-// app.get('/rectanglePage:id', (req,res)=>{
-//   var getRectangles = 'SELECT * FROM rec WHERE ' + '"id"' + ' = ' + "'" + req.params.id + "';"
-//   pool.query(getRectangles, (error, result) => {
-//     if (error){
-//       res.end(error)
-//     }
-//     else{
-//       var data = {results: result.rows}
-//       console.log(data.results)
-//       console.log("MY LOG ----------------------------" +   data.results[0].name.toString())
-//       res.render('pages/rectangleEditPage.ejs', data)
-//     }
-//
-//   })
-// })
+  // console.log(name);
+  // console.log(instNo);
+  try{
+    var getPhleb = `INSERT INTO phlebotomist (name, instno) VALUES ('${name}', ${instNo});`
+    let result = await pool.query(getPhleb)
+    const data = { name: "Phlebotomists", data: await getTableData("phlebotomist") }
+    res.redirect(req.protocol + '://' + req.get('host') + '/phlebotomists' )
+
+  } catch(error){
+    res.send(error)
+
+  }
+})
+
+// Update
+app.get('/updatePhleb/:phlebid', async (req,res)=> {
+  let selectPhleb = req.body.phlebid
+
+  console.log(selectPhleb)
+  try {
+    // var getPhleb = `SELECT `
+    const data = { name: `Phlebotomists`, data: await getTableData("phlebotomist") }
+    res.render('pages/phlebUpdate', data)
+  } catch (error) {
+    res.send(error)
+  }
+
+  // pool.query(getRectangles, (error, result) => {
+  //   if (error){
+  //     res.end(error)
+  //   }
+  //   else{
+  //     var data = {results: result.rows}
+  //     console.log(data.results)
+  //     console.log("MY LOG ----------------------------" +   data.results[0].name.toString())
+  //     res.render('pages/rectangleEditPage.ejs', data)
+  //   }
+  //
+  // })
+})
 // app.get()
 // SELECT QUERY
 // Query: Search for rows by a field value
