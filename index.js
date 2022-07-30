@@ -9,9 +9,7 @@ var app = express()
 const { Pool } = require('pg')
 const config = {
   // db name is bbdb
-  connectionString: 'postgres://postgres:2038@localhost/bbdb'
-
-  // process.env.DATABASE_URL ||
+  connectionString: process.env.DATABASE_URL || 'postgres://postgres:root@localhost/bbdb'
 
 }
 
