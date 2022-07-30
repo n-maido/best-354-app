@@ -23,6 +23,7 @@
             <tr>
                 <% Object.keys(item).forEach(function(i) { %>
                     <td class="attribute-element"><%= item[i] %></td>
+<!--                     <% console.log(item[i])%> -->
                 <% }); %>
             </tr>
                 <td>
@@ -46,6 +47,7 @@
         <form method="post" action="/InsertPhleb">
             <label style="margin-left: 15px;">Name:</label>
             <!-- <input type="generateInput(this.form)" name="value" required> -->
+
             <input type="text" name="phlebName" required>
 
             <label>InstNo: </label>

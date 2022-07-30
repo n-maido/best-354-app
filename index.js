@@ -407,31 +407,39 @@ app.post('/InsertPhleb', async (req,res)=>{
 
 // Update
 app.get('/updatePhleb/:phlebid', async (req,res)=> {
-  let selectPhleb = req.body.phlebid
-
-  console.log(selectPhleb)
+  let selectPhleb = req.params.phlebid.substring(1)
+  let result = await pool.query(`SELECT * FROM phlebotomist WHERE phlebid='${selectPhleb}'`)
+  // console.log(result.rows)
+  // console.log(selectPhleb)
   try {
-    // var getPhleb = `SELECT `
-    const data = { name: `Phlebotomists`, data: await getTableData("phlebotomist") }
+    var getPhleb = `SELECT * from phlebotomist where phlebid='${selectPhleb}'`
+
+    const data = { name: `${result.rows[0].name}`, data: await result.rows }
     res.render('pages/phlebUpdate', data)
   } catch (error) {
     res.send(error)
   }
 
-  // pool.query(getRectangles, (error, result) => {
-  //   if (error){
-  //     res.end(error)
-  //   }
-  //   else{
-  //     var data = {results: result.rows}
-  //     console.log(data.results)
-  //     console.log("MY LOG ----------------------------" +   data.results[0].name.toString())
-  //     res.render('pages/rectangleEditPage.ejs', data)
-  //   }
-  //
-  // })
 })
-// app.get()
+
+app.post('/updatePhleb/:phlebid', async (req,res) =>{
+  let name = req.body.name
+  let instNo= req.body.instNo
+  let selectPhleb = req.params.phlebid.substring(1)
+  console.log(name)
+  console.log(instNo)
+  console.log(selectPhleb)
+  try{
+    var getPhleb = `UPDATE phlebotomist SET name = '${name}', instno=${instNo} WHERE phlebid='${selectPhleb}'`
+    let result = await pool.query(getPhleb)
+    const data = { name: "Phlebotomists", data: await getTableData("phlebotomist") }
+    console.log(('try'))
+    res.redirect(req.protocol + '://' + req.get('host') + '/phlebotomists' )
+  } catch (error) {
+    res.send(error)
+  }
+})
+
 // SELECT QUERY
 // Query: Search for rows by a field value
 // e.g. Search for rows where name="samantha"
