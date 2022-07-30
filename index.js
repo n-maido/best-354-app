@@ -474,7 +474,7 @@ app.post('/Project', async (req, res) => {
 app.post('/Aggregation', async (req, res) => {
   let agg = req.body.agg === "oldest" ? "min" : "max"
   try {
-    const data = { name: `${req.body.agg} Donation`, data: await getAggData(agg)}
+    const data = { name: `${req.body.agg} donation`, data: await getAggData(agg)}
     res.render('pages/table', data)
   } catch (error) {
     res.send(error)
