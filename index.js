@@ -59,12 +59,17 @@ async function getJoinData() {
   }
 }
 
-async function getDivisionData() {
+async function getDivisionData(cols) {
+  
   try {
-    var divisionQuery = `SELECT * FROM Volunteer WHERE name not in 
-    (SELECT name FROM ((SELECT name, vID FROM (SELECT vID Conduct_Questionnaire) 
-    AS p CROSS JOIN (SELECT DISTINCT name FROM Volunteer) AS sp) EXCEPT 
-    (SELECT name, vID FROM Volunteer)) AS r);`
+    var divisionQuery = `SELECT * FROM (SELECT * FROM donate_donor WHERE instno IN (${cols})) as sx 
+    WHERE NOT EXISTS (
+    (SELECT p.instno FROM blood_drive as p)
+    EXCEPT
+    (SELECT sp.instno FROM donate_donor as sp WHERE sp.donorid = sx.donorid));`
+    if(cols.length === 1){
+      divisionQuery = `SELECT * FROM donate_donor WHERE instno IN (${cols})`;
+    }
     const result = await pool.query(divisionQuery);
     return result.rows
   } catch (error) {
@@ -102,6 +107,15 @@ async function getAggData(agg) {
   }
 }
 
+async function getInstNos() {
+  try {
+    var instNosQuery = `select distinct instno from donate_donor;`
+    const result = await pool.query(instNosQuery);
+    return result.rows
+  } catch (error) {
+    res.send(error)
+  }
+}
 
 // GET
 // main page
@@ -243,8 +257,8 @@ app.get('/Platelets', async (req, res) => {
 
 app.get('/Donations-Donors', async (req, res) => {
   try {
-    const data = { name: "Donations-Donors", data: await getTableData("donate_donor") }
-    res.render('pages/table', data)
+    const data = { name: "Donations-Donors", data: await getTableData("donate_donor"), instnos: await getInstNos() }
+    res.render('pages/donate_donor', data)
   } catch (error) {
     res.send(error)
   }
@@ -362,13 +376,19 @@ app.get('/Join', async (req, res) => {
   }
 })
 
-app.get('/Divide', async (req, res) => {
-  try {
-    const data = { name: `Divide Operator: Volunteer/Conduct_Questionnaire`, data: await getJoinData()}
-    res.render('pages/table', data)
-  } catch (error) {
-    res.send(error)
-  }
+app.post('/Divide', async (req, res) => {
+    // grab selected fields
+    let body = JSON.parse(JSON.stringify(req.body)) // format: {'selection1': on, 'selection2': on}
+    let cols = Object.keys(body).toString() // format: selection1, selection2
+    
+    try {
+      const data = { name: `Divide Operator: Donations Donors / Blood Drives`, data: await getDivisionData(cols)}
+      res.render('pages/table', data)
+    } catch (error) {
+      res.send(error)
+    }
+
+
 })
 
 // SELECT QUERY

@@ -254,7 +254,7 @@ INSERT INTO public.blood_bank(
 INSERT INTO public.blood_drive(
 	driveid, instno, address)
 	VALUES 
-	(1, 1, '1200 Okanagan, Armstrong, BC'),
+	(1,1, '1200 Okanagan, Armstrong, BC'),
 	(2,2, '1580 Elm St, Westbank, BC'),
 	(3,3, '100 Burner Ave, Toronto, ON'),
 	(4,4, '8080 Frigon, Shawinigan, QC'),
@@ -358,7 +358,11 @@ INSERT INTO public.donate_donor(
 	(3, '2017-03-17 07:40:34', 2, 2),
 	(5, '2016-08-13 20:57:35', 3, 3),
 	(1, '2021-11-06 17:22:11', 4, 4),
-	(2, '2019-04-26 05:20:01', 5, 5);
+	(2, '2019-04-26 05:20:01', 5, 5),
+	(5, '2016-09-13 20:57:35', 2, 2),
+	(5, '2016-10-13 20:57:35', 4, 4),
+	(5, '2016-11-13 20:57:35', 5, 5),
+	(5, '2016-12-13 20:57:35', 1, 1);
 
 INSERT INTO public.donate_blood(
 	bloodid, donorid, "time")
