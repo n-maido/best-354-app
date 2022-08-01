@@ -40,3 +40,12 @@ node index.js
 ```
 
 The app should now be running on [localhost:5000](http://localhost:5000/).
+
+## File structure
+### Frontend
+The code for the frontend pages is in `views/pages`
+
+### Backend
+The code for the backend (routes, queries) is in `index.js`
+
+The code to create and populate the tables is in `table_setup.sql`
