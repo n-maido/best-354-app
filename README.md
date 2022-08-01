@@ -2,6 +2,8 @@
 
 A blood bank database for CMPT 354 Group 26, Summer 2022.
 
+Latest commit hash: commit 8e0a1d0c4c5f9058749ce11a9c2b5295c4381226 
+
 View the app: https://best-354-app.herokuapp.com/ 
 
 View the [documentation](https://docs.google.com/document/d/1TzZimKhZkYHa-XmhQ1VFtjhuz3x9eaKtt_QnMZm7K80/edit?usp=sharing)
