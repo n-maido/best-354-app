@@ -18,9 +18,7 @@
             <th><%= item %></th>
             <% }); %>
             <th>
-
             </th>
-
         </tr>
         <tr>
             <form method="post" action="/updatePhleb/:<%=data[0].phlebid %>">
@@ -28,7 +26,7 @@
                 <td class="attribute-element">  <input type="text" id="name" name="name" placeholder="<%= name%>" required></td>
                 <td class="attribute-element">
                     <select name="instNo" id="">
-                        <option selected disabled hidden>choose option</option>
+                        <option selected disabled hidden required>choose option</option>
                         <option>1</option>
                         <option>2</option>
                         <option>3</option>
