@@ -9,10 +9,7 @@ var app = express()
 const { Pool } = require('pg')
 const config = {
   // db name is bbdb
-  connectionString: 'postgres://postgres:2038@localhost/bbdb'
-
-  // process.env.DATABASE_URL ||
-
+  connectionString: process.env.DATABASE_URL ||'postgres://postgres:2038@localhost/bbdb'
 }
 
 // if we're connected to the db on heroku, add this ssl setting
@@ -426,14 +423,14 @@ app.post('/updatePhleb/:phlebid', async (req,res) =>{
   let name = req.body.name
   let instNo= req.body.instNo
   let selectPhleb = req.params.phlebid.substring(1)
-  console.log(name)
-  console.log(instNo)
-  console.log(selectPhleb)
+  // console.log(name)
+  // console.log(instNo)
+  // console.log(selectPhleb)
   try{
     var getPhleb = `UPDATE phlebotomist SET name = '${name}', instno=${instNo} WHERE phlebid='${selectPhleb}'`
     let result = await pool.query(getPhleb)
     const data = { name: "Phlebotomists", data: await getTableData("phlebotomist") }
-    console.log(('try'))
+    // console.log(('try'))
     res.redirect(req.protocol + '://' + req.get('host') + '/phlebotomists' )
   } catch (error) {
     res.send(error)
