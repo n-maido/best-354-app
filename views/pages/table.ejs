@@ -15,29 +15,41 @@
         <tr>
             <% Object.keys(data[0]).forEach(function(item) { %>
             <th><%= item %></th>
-            <% }); %>
+            <% }) %>
         </tr>
         <!--Populate with data-->
         <% data.forEach(function(item) { %>
             <tr>
                 <% Object.keys(item).forEach(function(i) { %>
                     <td class="attribute-element"><%= item[i] %></td>
-
-                <% }); %>
+                <% }) %>
             </tr>
         <% }); %>
     </table>
 
     <div class="buttons-container">
-        <% if(name === "Blood Transported From Blood Drive to Blood Bank"|| name === "Blood Transported From Blood Bank to Hospital" ){ %>
+        <!--Nhi's queries-->
+        <% if (name.includes("Search results") || name.includes("Displaying columns")){ %>
+            <form action="/Donor-Contact" >
+                <input type="submit" value="Back to Donor Contact" class="link-button"/>
+            </form>
+        <% } else if (name.includes("Oldest donation") || name.includes("Most recent donation")){ %>
+            <form action="/Donations-Blood" >
+                <input type="submit" value="Back to Donations (Blood)" class="link-button" style="width: 200px"/>
+            </form>
+        <!--Misha's queries-->
+        <% } else if (name === "Blood Transported From Blood Drive to Blood Bank" || name === "Blood Transported From Blood Bank to Hospital" ){ %>
+            <%console.log("hit") %>
             <form action="/Join" >
                 <input type="submit" value="Transport History" class="link-button"/>
             </form>
+        <!--Default-->
+        <% } else {%>
+            <form action="/" >
+                <input type="submit" value="Back To Main Page" class="link-button" />
+            </form>
         <% } %>
-
-        <form action="/" >
-            <input type="submit" value="Back To Main Page" class="link-button" />
-        </form>
+        
     </div>
 </body>
 </html>
