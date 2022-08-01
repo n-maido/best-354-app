@@ -1,42 +1,42 @@
 # 354-blood-bank
 
-## node-js-getting-started
+A blood bank database for CMPT 354 Group 26, Summer 2022.
 
-A barebones Node.js app using [Express 4](http://expressjs.com/).
+View the app: https://best-354-app.herokuapp.com/ 
 
-This application supports the [Getting Started on Heroku with Node.js](https://devcenter.heroku.com/articles/getting-started-with-nodejs) article - check it out.
+View the [documentation](https://docs.google.com/document/d/1TzZimKhZkYHa-XmhQ1VFtjhuz3x9eaKtt_QnMZm7K80/edit?usp=sharing)
 
-## Running Locally
-
+## Project setup
 Make sure you have [Node.js](http://nodejs.org/) and the [Heroku CLI](https://cli.heroku.com/) installed.
-
-```sh
-$ git clone https://github.com/heroku/node-js-getting-started.git # or clone your own fork
-$ cd node-js-getting-started
-$ npm install
-$ npm start
+### Install Dependencies
+```
+npm install
 ```
 
-Your app should now be running on [localhost:5000](http://localhost:5000/).
-
-## Deploying to Heroku
-
+### Set up the local database
+Connect to postgres with user password 'root'
 ```
-$ heroku create
-$ git push heroku main
-$ heroku open
+psql -h localhost -U postgres
 ```
 
-or
+Create a database called 'bbdb'
+```
+CREATE DATABASE bbdb;
+```
 
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+Connect to the database
+```
+\c bbdb;
+```
 
-## Documentation
+Run the sql script to create and populate tables
+```
+\i table_setup.sql;
+```
 
-For more information about using Node.js on Heroku, see these Dev Center articles:
+### Run locally
+```
+node index.js
+```
 
-- [Getting Started on Heroku with Node.js](https://devcenter.heroku.com/articles/getting-started-with-nodejs)
-- [Heroku Node.js Support](https://devcenter.heroku.com/articles/nodejs-support)
-- [Node.js on Heroku](https://devcenter.heroku.com/categories/nodejs)
-- [Best Practices for Node.js Development](https://devcenter.heroku.com/articles/node-best-practices)
-- [Using WebSockets on Heroku with Node.js](https://devcenter.heroku.com/articles/node-websockets)
+The app should now be running on [localhost:5000](http://localhost:5000/).
