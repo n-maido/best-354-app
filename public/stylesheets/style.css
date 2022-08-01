@@ -168,7 +168,14 @@ body {
     display:flex;
     flex-direction: row;
 }
-
+.buttons-container-phleb{
+  padding-top: 20px;
+  width: 90%;
+  min-width: 900px;
+  margin:auto;
+  display:flex;
+  flex-direction: row;
+}
 .link-button{
     align-items: center;
   appearance: none;

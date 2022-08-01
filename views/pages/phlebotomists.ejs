@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="../stylesheets/style.css" />
+  <title>Phlebotomists</title>
+</head>
+<body>
+  <h1><%= name %></h1>
+  <!--Generate table-->
+    <table class="custom-table">
+        <!--Generate headings-->
+        <tr>
+            <% Object.keys(data[0]).forEach(function(item) { %>
+            <th><%= item %></th>
+            <% }); %>
+            <th>  </th>
+        </tr>
+        <!--Populate with data-->
+        <% data.forEach(function(item) { %>
+            <tr>
+                <% Object.keys(item).forEach(function(i) { %>
+                    <td class="attribute-element"><%= item[i] %></td>
+                <% }); %>
+
+                        <td>
+                        <div class="buttons-container-phleb">
+                            <form method="post" action="/deletePhleb/:<%=item.phlebid%>">
+                            <input type="submit" value="Delete" class="link-button" />
+                            </form>
+
+                             <form method="get" action="/updatePhleb/:<%=item.phlebid%>">
+                                <input type="submit" value="Update" class="link-button" />
+                             </form>
+                        </div>
+                        </td>
+
+
+            </tr>
+        <% }); %>
+    </table>
+    <!--INSERTION-->
+     <div class="single-table-name">
+            <h4>Insert new phlebotomist</h4>
+     </div>
+    <div class="buttons-container">
+        <form method="post" action="/InsertPhleb">
+            <label style="margin-left: 15px;">Name:</label>
+            <!-- <input type="generateInput(this.form)" name="value" required> -->
+
+            <input type="text" name="phlebName" required>
+
+            <label>InstNo: </label>
+            <select name="instNo" id="">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+        <input type="submit" value="Insert" class="link-button"/>
+    </form>
+
+
+    </div>
+    <div class="buttons-container">
+    <form action="/" >
+            <input type="submit" value="Back To Main Page" class="link-button" />
+        </form>
+    </div>
+</body>
+</html>

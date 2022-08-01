@@ -9,7 +9,8 @@ var app = express()
 const { Pool } = require('pg')
 const config = {
   // db name is bbdb
-  connectionString: process.env.DATABASE_URL || "postgres://postgres:root@localhost/bbdb"
+
+  connectionString: process.env.DATABASE_URL || 'postgres://postgres:root@localhost/bbdb'
 }
 
 // if we're connected to the db on heroku, add this ssl setting
@@ -204,7 +205,7 @@ app.get('/Hospitals', async (req, res) => {
 app.get('/Phlebotomists', async (req, res) => {
   try {
     const data = { name: "Phlebotomists", data: await getTableData("phlebotomist") }
-    res.render('pages/table', data)
+    res.render('pages/phlebotomists', data)
   } catch (error) {
     res.send(error)
   }
@@ -389,6 +390,72 @@ app.post('/Divide', async (req, res) => {
     }
 
 
+})
+
+// DELETE QUERY
+app.post('/deletePhleb/:phlebid', async (req,res) => {
+  // console.log(req.params.phlebid.substring(1))
+  try {
+    var getPhleb = `DELETE FROM phlebotomist WHERE phlebid=${req.params.phlebid.substring(1)};`
+    let result = await pool.query(getPhleb)
+    const data = { name: `Phlebotomists`, data: await getTableData("phlebotomist") }
+    // res.redirect(req.protocol+ 'pages/table', data)
+    res.redirect(req.protocol + '://' + req.get('host') + '/phlebotomists' );
+  } catch(error) {
+    res.send(error)
+}})
+// INSERT QUERY
+app.post('/InsertPhleb', async (req,res)=>{
+  let name = req.body.phlebName
+  let instNo = req.body.instNo
+
+  // console.log(name);
+  // console.log(instNo);
+  try{
+    var getPhleb = `INSERT INTO phlebotomist (name, instno) VALUES ('${name}', ${instNo});`
+    let result = await pool.query(getPhleb)
+    const data = { name: "Phlebotomists", data: await getTableData("phlebotomist") }
+    res.redirect(req.protocol + '://' + req.get('host') + '/phlebotomists' )
+
+  } catch(error){
+    res.send(error)
+
+  }
+})
+
+// Update
+app.get('/updatePhleb/:phlebid', async (req,res)=> {
+  let selectPhleb = req.params.phlebid.substring(1)
+  let result = await pool.query(`SELECT * FROM phlebotomist WHERE phlebid='${selectPhleb}'`)
+  // console.log(result.rows)
+  // console.log(selectPhleb)
+  try {
+    var getPhleb = `SELECT * from phlebotomist where phlebid='${selectPhleb}'`
+
+    const data = { name: `${result.rows[0].name}`, data: await result.rows }
+    res.render('pages/phlebUpdate', data)
+  } catch (error) {
+    res.send(error)
+  }
+
+})
+
+app.post('/updatePhleb/:phlebid', async (req,res) =>{
+  let name = req.body.name
+  let instNo= req.body.instNo
+  let selectPhleb = req.params.phlebid.substring(1)
+  // console.log(name)
+  // console.log(instNo)
+  // console.log(selectPhleb)
+  try{
+    var getPhleb = `UPDATE phlebotomist SET name = '${name}', instno=${instNo} WHERE phlebid='${selectPhleb}'`
+    let result = await pool.query(getPhleb)
+    const data = { name: "Phlebotomists", data: await getTableData("phlebotomist") }
+    // console.log(('try'))
+    res.redirect(req.protocol + '://' + req.get('host') + '/phlebotomists' )
+  } catch (error) {
+    res.send(error)
+  }
 })
 
 // SELECT QUERY
