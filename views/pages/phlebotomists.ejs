@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+  <link rel="stylesheet" type="text/css" href="../stylesheets/style.css" />
   <title>Phlebotomists</title>
 </head>
 <body>
@@ -16,7 +16,7 @@
             <% Object.keys(data[0]).forEach(function(item) { %>
             <th><%= item %></th>
             <% }); %>
-            <th> </th>
+            <th>  </th>
         </tr>
         <!--Populate with data-->
         <% data.forEach(function(item) { %>
@@ -24,17 +24,20 @@
                 <% Object.keys(item).forEach(function(i) { %>
                     <td class="attribute-element"><%= item[i] %></td>
                 <% }); %>
-            </tr>
-                <td>
-                <div class="buttons-container">
-                    <form method="post" action="/deletePhleb/:<%=item.phlebid%>">
-                        <input type="submit" value="Delete" class="link-button" />
-                    </form>
 
-                    <form method="get" action="/updatePhleb/:<%=item.phlebid%>">
-                         <input type="submit" value="Update" class="link-button" />
-                    </form>
-                </div>
+                        <td>
+                        <div class="buttons-container-phleb">
+                            <form method="post" action="/deletePhleb/:<%=item.phlebid%>">
+                            <input type="submit" value="Delete" class="link-button" />
+                            </form>
+
+                             <form method="get" action="/updatePhleb/:<%=item.phlebid%>">
+                                <input type="submit" value="Update" class="link-button" />
+                             </form>
+                        </div>
+                        </td>
+
+
             </tr>
         <% }); %>
     </table>
